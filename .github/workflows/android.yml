@@ -25,5 +25,5 @@ jobs:
       run: chmod +x gradlew
       working-directory: EventRegistration-Backend
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradle build
       working-directory: EventRegistration-Backend
