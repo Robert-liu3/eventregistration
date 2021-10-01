@@ -1,22 +1,20 @@
-package ca.mcgill.ecse321.eventregistration.dao;
+package ca.mcgill.ecse321.eventregistration.repository;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.util.List;
+
+import ca.mcgill.ecse321.eventregistration.model.Event;
+import ca.mcgill.ecse321.eventregistration.model.Person;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import ca.mcgill.ecse321.eventregistration.model.Person;
-import ca.mcgill.ecse321.eventregistration.model.Event;
+import javax.transaction.Transactional;
+import java.sql.Time;
+import java.sql.Date;
+import java.util.List;
 
 @Repository
 public class EventRegistrationRepository {
-
     @Autowired
     EntityManager entityManager;
 
@@ -27,29 +25,30 @@ public class EventRegistrationRepository {
         entityManager.persist(p);
         return p;
     }
-
     @Transactional
     public Person getPerson(String name) {
         Person p = entityManager.find(Person.class, name);
         return p;
     }
 
-    @Transactional
-    public Event createEvent(String name, Date date, Time startTime, Time endTime) {
-        Event e = new Event();
-        e.setName(name);
-        e.setDate(date);
-        e.setStartTime(startTime);
-        e.setEndTime(endTime);
-        entityManager.persist(e);
-        return e;
-    }
+
+//    @Transactional
+//    public Event createEvent(String name, Date date, Time startTime, Time endTime) {
+//        Event event = new Event();
+//        event.setName(name);
+////        e.setDate(date);
+////        e.setStartTime(startTime);
+////        e.setEndTime(endTime);
+//        entityManager.persist(event);
+//        return event;
+//    }
 
     @Transactional
     public Event getEvent(String name) {
         Event e = entityManager.find(Event.class, name);
         return e;
     }
+
     @Transactional
     public List<Event> getEventsBeforeADeadline(Date deadline) {
         TypedQuery<Event> q = entityManager.createQuery("select e from Event e where e.date < :deadline",Event.class);
@@ -57,5 +56,4 @@ public class EventRegistrationRepository {
         List<Event> resultList = q.getResultList();
         return resultList;
     }
-
 }
